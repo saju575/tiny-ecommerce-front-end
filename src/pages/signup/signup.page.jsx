@@ -2,22 +2,25 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaLock, FaUser } from "react-icons/fa";
+import { HiPencil } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+
 import * as Yup from "yup";
 
 const schema = Yup.object().shape({
+  name: Yup.string().required("Please enter your name"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Please enter your email"),
   password: Yup.string().required("Please enter your password").min(6),
 });
 
-const LoginPage = () => {
+const SignupPage = () => {
   const [show, setShow] = useState(false);
 
   // formik
   const formik = useFormik({
-    initialValues: { email: "", password: "" },
+    initialValues: { email: "", password: "", name: "" },
     validationSchema: schema,
     onSubmit: async ({ email, password }) => {},
   });
@@ -32,10 +35,26 @@ const LoginPage = () => {
           <div className="flex flex-col justify-between h-[576px] ">
             <div className="p-10 md:mt-20">
               <div className="text-2xl font-medium text-center uppercase sm:p-5">
-                Login
+                Sign up
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col justify-center space-y-2">
+                  <div className="relative">
+                    <HiPencil className="absolute w-5 h-5 ml-2 top-3" />
+
+                    <input
+                      name="name"
+                      type="text"
+                      className="w-full p-3 border-b-2 pl-9 placeholder:text-black outline-0"
+                      placeholder="Name"
+                      value={values.name}
+                      onChange={handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    {errors.name && touched.name && (
+                      <span className="text-red pt-2 block">{errors.name}</span>
+                    )}
+                  </div>
                   <div className="relative">
                     <FaUser className="absolute w-5 h-5 ml-2 top-3" />
 
@@ -92,9 +111,9 @@ const LoginPage = () => {
                 </div>
                 <br />
                 <div className="flex space-x-2">
-                  <p>Don&apos;t have any account?</p>{" "}
-                  <Link className="underline text-blue-500" to={"/signup"}>
-                    Signup
+                  <p>Already have an account?</p>{" "}
+                  <Link className="underline text-blue-500" to={"/login"}>
+                    Login
                   </Link>
                 </div>
                 <br />
@@ -104,7 +123,7 @@ const LoginPage = () => {
                     type="submit"
                     className="p-2 px-4 text-white bg-[#00a8ff] rounded-3xl"
                   >
-                    LOGIN
+                    SIGNUP
                   </button>
                 </div>
               </form>
@@ -116,4 +135,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
