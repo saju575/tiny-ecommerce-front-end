@@ -15,7 +15,7 @@ export default {
         slight: "#dcdde1",
         softlight: "#f0f0f0",
         softdark: "#626262",
-        gray: "#546E7A",
+
         red: "#E53935",
       },
     },

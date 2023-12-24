@@ -5,7 +5,10 @@ import { FaLock, FaUser } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 
+import { useMutation } from "react-query";
 import * as Yup from "yup";
+import SuccessMessage from "../../components/ui/successMessage/success-message.ui.component";
+import { postData } from "../../utils/lib/postData";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Please enter your name"),
@@ -18,11 +21,17 @@ const schema = Yup.object().shape({
 const SignupPage = () => {
   const [show, setShow] = useState(false);
 
+  const { mutateAsync, isSuccess, isLoading, isError, error } = useMutation({
+    mutationFn: (data) => postData("/users/process-registration", data),
+  });
+
   // formik
   const formik = useFormik({
     initialValues: { email: "", password: "", name: "" },
     validationSchema: schema,
-    onSubmit: async ({ email, password }) => {},
+    onSubmit: async ({ email, password, name }) => {
+      await mutateAsync({ email, password, name });
+    },
   });
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
@@ -81,7 +90,7 @@ const SignupPage = () => {
                         type={!show ? "password" : "text"}
                         className="w-full p-3 px-9 placeholder:text-black outline-0"
                         placeholder="Password"
-                        name="Password"
+                        name="password"
                         id="password"
                         value={values.password}
                         onChange={handleChange}
@@ -121,11 +130,25 @@ const SignupPage = () => {
                   <div className="text-[#00a8ff]"></div>
                   <button
                     type="submit"
-                    className="p-2 px-4 text-white bg-[#00a8ff] rounded-3xl"
+                    className={`p-2 px-4 text-white bg-[#00a8ff] rounded-3xl ${
+                      isLoading ? "cursor-not-allowed" : "cursor-pointer"
+                    }`}
+                    disabled={isLoading}
                   >
                     SIGNUP
                   </button>
                 </div>
+                <br />
+                {isError && error && (
+                  <div className="mt-4 text-red text-sm text-center">
+                    {error.message}
+                  </div>
+                )}
+                {isSuccess && (
+                  <SuccessMessage
+                    message={`Go to your ${formik.values.email} to activate account`}
+                  />
+                )}
               </form>
             </div>
           </div>

@@ -1,9 +1,12 @@
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaLock, FaUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useMutation } from "react-query";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { UserContext, actionTypes } from "../../providers/user.provider";
+import { postData } from "../../utils/lib/postData";
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -14,12 +17,36 @@ const schema = Yup.object().shape({
 
 const LoginPage = () => {
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { dispatch } = useContext(UserContext);
+
+  const from = location.state?.from?.pathname || "/";
+
+  /* 
+    react query
+  */
+
+  const { mutateAsync, isLoading, isError, error } = useMutation({
+    mutationFn: (data) => postData("/user/auth/login", data),
+    onSuccess: async (data) => {
+      dispatch({ type: actionTypes.SET_USER, payload: data.payload });
+
+      navigate(from, { replace: true });
+    },
+  });
 
   // formik
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: schema,
-    onSubmit: async ({ email, password }) => {},
+    onSubmit: async ({ email, password }) => {
+      try {
+        await mutateAsync({ email, password });
+      } catch (error) {
+        // console.log(error)
+      }
+    },
   });
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
@@ -62,7 +89,7 @@ const LoginPage = () => {
                         type={!show ? "password" : "text"}
                         className="w-full p-3 px-9 placeholder:text-black outline-0"
                         placeholder="Password"
-                        name="Password"
+                        name="password"
                         id="password"
                         value={values.password}
                         onChange={handleChange}
@@ -91,6 +118,12 @@ const LoginPage = () => {
                   </div>
                 </div>
                 <br />
+                {isError && error && (
+                  <div className="mt-4 text-red text-sm text-center">
+                    {error.message}
+                  </div>
+                )}
+                <br />
                 <div className="flex space-x-2">
                   <p>Don&apos;t have any account?</p>{" "}
                   <Link className="underline text-blue-500" to={"/signup"}>
@@ -102,7 +135,10 @@ const LoginPage = () => {
                   <div className="text-[#00a8ff]"></div>
                   <button
                     type="submit"
-                    className="p-2 px-4 text-white bg-[#00a8ff] rounded-3xl"
+                    className={`p-2 px-4 text-white bg-[#00a8ff] rounded-3xl ${
+                      isLoading ? "cursor-not-allowed" : "cursor-pointer"
+                    }`}
+                    disabled={isLoading ? true : false}
                   >
                     LOGIN
                   </button>
