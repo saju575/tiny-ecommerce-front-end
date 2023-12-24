@@ -55,16 +55,16 @@ Include screenshots of the website to give users a preview of what to expect.
 
 ### Login Page
 
-![Login Page]("./public/login.png")
+![Login Page](./public/login.png)
 
 ### Signup Page
 
-![Signup Page]("./public/signup.png")
+![Signup Page](./public/signup.png)
 
 ### Products Page
 
-![Products Page]("./public/product.png)
+![Products Page](./public/product.png)
 
 ### Product Details
 
-![Product Details]("./public/details.png)
+![Product Details](./public/details.png)
