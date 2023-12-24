@@ -1,0 +1,143 @@
+/* Product details */
+
+/* .productDetail .details {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 7rem;
+} */
+.productDetail .details .left {
+  display: flex;
+  flex-direction: column;
+}
+.productDetail .details .left .main {
+  text-align: center;
+
+  height: 30rem;
+  padding: 3rem;
+}
+.productDetail .details .left .main img {
+  object-fit: cover;
+  height: 100%;
+}
+.productDetail .details .thumbnails {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.productDetail .thumbnail img {
+  height: 100%;
+  object-fit: cover;
+}
+.productDetail .thumbnail {
+  width: 10rem;
+  height: 10rem;
+  background-color: #f6f2f1;
+  text-align: center;
+}
+
+.productDetail .right span {
+  display: inline-block;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.productDetail .right h1 {
+  font-size: 4rem;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+}
+
+.productDetail .right .price {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ff7c9c;
+  margin-bottom: 2rem;
+}
+.productDetail .right div {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+/* .productDetail .right select {
+  font-family: "Poppins", sans-serif;
+  width: 20rem;
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  appearance: none;
+  outline: none;
+} */
+.productDetail form {
+  margin-bottom: 2rem;
+}
+.productDetail form span {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  z-index: 0;
+}
+
+.productDetail .form input {
+  padding: 0.6rem 0.8rem;
+  text-align: center;
+  width: 3.5rem;
+  margin-right: 2rem;
+}
+
+.productDetail .form .addCart {
+  background-color: #927cff;
+  padding: 0.8rem 4rem;
+  color: #fff;
+  border-radius: 3rem;
+}
+
+.productDetail h3 {
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 996px) {
+  /* .productDetail .left {
+    width: 30rem;
+    height: 45rem;
+  } */
+  .productDetail .details {
+    gap: 3rem;
+  }
+  .productDetail .thumbnails {
+    width: 30rem;
+    gap: 0.5rem;
+  }
+  .productDetail .thumbnail {
+    width: auto;
+    height: 10rem;
+    background-color: #f6f2f1;
+    text-align: center;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 650px) {
+  /* .productDetail .details {
+    grid-template-columns: 1fr;
+    row-gap: 3rem;
+  } */
+  /* .productDetail .right {
+    margin-top: 10rem;
+  }
+  .productDetail .left {
+    width: 100%;
+    height: 45rem;
+  } */
+  .productDetail .thumbnails {
+    width: 100%;
+  }
+  .productDetail .right h1 {
+    font-size: 3.5rem;
+  }
+}
+@media (max-width: 320px) {
+  html {
+    font-size: 50%;
+  }
+}

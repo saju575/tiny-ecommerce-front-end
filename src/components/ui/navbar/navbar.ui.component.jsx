@@ -1,9 +1,30 @@
+import { useContext } from "react";
 import { FaShoppingBag } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useMutation } from "react-query";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext, actionTypes } from "../../../providers/user.provider";
+import { postData } from "../../../utils/lib/postData";
 const Navbar = () => {
+  const { state, dispatch } = useContext(UserContext);
+  const navigate = useNavigate();
+  const { mutateAsync: logout } = useMutation({
+    mutationFn: () => postData("/user/auth/logout"),
+    onSuccess: () => {
+      dispatch({ type: actionTypes.LOGOUT, payload: null });
+      navigate("/login");
+    },
+  });
+
+  const onLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      //
+    }
+  };
   return (
     <div className="py-3 bg-slate-50">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-2">
         <div className="flex justify-between items-center">
           <Link to={"/"}>
             <svg
@@ -28,8 +49,22 @@ const Navbar = () => {
             </svg>
           </Link>
           <div className="flex space-x-3 items-center text-lg">
-            <Link to={"/"}>Product</Link>
-            <FaShoppingBag />
+            <Link to={"/"}>Products</Link>
+            {state?.user && (
+              <button className="btn" onClick={onLogout}>
+                Logout
+              </button>
+            )}
+            <Link to={"/cart"}>
+              <div className="relative">
+                {state.user?.cart.length > 0 && (
+                  <div className="absolute bottom-auto left-auto right-0 top-0 z-10 inline-block -translate-y-1/2 translate-x-2/4 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 whitespace-nowrap rounded-full bg-indigo-700 p-1 text-center align-baseline text-[10px] font-bold leading-none text-white">
+                    {state.user?.cart.length}
+                  </div>
+                )}
+                <FaShoppingBag />
+              </div>
+            </Link>
           </div>
         </div>
       </div>

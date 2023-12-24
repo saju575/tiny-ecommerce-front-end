@@ -5,7 +5,9 @@ import {
 } from "react-router-dom";
 import RootLayout from "../layout/root.layout";
 import ActivateUserAccount from "../pages/activate-user/activate-user.page";
+import CartPage from "../pages/cart/cart.page";
 import LoginPage from "../pages/login/login.page";
+import ProductDetailsPage from "../pages/product-details/product-details.page";
 import ProductsPage from "../pages/products/products.page";
 import SignupPage from "../pages/signup/signup.page";
 import GustRoute from "./gust.route";
@@ -52,6 +54,8 @@ export const router = createBrowserRouter(
       >
         {/* Products route */}
         <Route path="/" element={<ProductsPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/products/:id" element={<ProductDetailsPage />} />
       </Route>
     </>
   )
