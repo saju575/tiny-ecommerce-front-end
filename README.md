@@ -63,7 +63,7 @@ Include screenshots of the website to give users a preview of what to expect.
 
 ### Products Page
 
-![Products Page](./public/product.png)
+![Products Page](./public/products.png)
 
 ### Product Details
 
